@@ -41,21 +41,21 @@ resource "aws_security_group" "isucon" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["126.65.217.197/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["126.65.217.197/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["126.65.217.197/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -70,10 +70,23 @@ resource "aws_security_group" "isucon" {
   }
 }
 
-resource "aws_instance" "isucon" {
-  ami = "ami-0ecfc02bf3af2d03e"
+resource "aws_instance" "isucon1" {
+  ami = "ami-006d211cb716fe8a0"
   instance_type = "c6i.large"
-  key_name      = "hikaru-isucon"
+  key_name      = "isucon20241113"
+  subnet_id = aws_subnet.public.id
+
+  vpc_security_group_ids = [aws_security_group.isucon.id]
+
+  tags = {
+    Name = "hikaru-ec2"
+  }
+}
+
+resource "aws_instance" "isucon2" {
+  ami = "ami-006d211cb716fe8a0"
+  instance_type = "c6i.large"
+  key_name      = "isucon20241113"
   subnet_id = aws_subnet.public.id
 
   vpc_security_group_ids = [aws_security_group.isucon.id]
